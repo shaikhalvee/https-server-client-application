@@ -45,15 +45,15 @@ public class HttpsExampleClientController {
 
 	@GetMapping("/value")
 	public String getValue() {
-//		File certificateFile = new File(SERVER_CERTIFICATE_FILE);
+		File certificateFile = new File(SERVER_CERTIFICATE_FILE);
 		try {
-//			InputStream certificateInputStream = new FileInputStream(certificateFile);
-//			CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-//			X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(certificateInputStream);
+			InputStream certificateInputStream = new FileInputStream(certificateFile);
+			CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+			X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(certificateInputStream);
 
 			RestTemplate restTemplate = new RestTemplate();
 			return restTemplate.getForObject(SERVICE_URL, String.class);
-		} catch (Exception e) {
+		} catch (FileNotFoundException | CertificateException e) {
 			e.printStackTrace();
 		}
 		return "Value not found";
