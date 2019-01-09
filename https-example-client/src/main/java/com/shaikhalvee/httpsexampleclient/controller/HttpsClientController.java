@@ -23,7 +23,6 @@ public class HttpsClientController {
 	private static final String HTTPS_SERVICE_URL = "https://localhost";
 	private static final String PORT = "8443";
 	private static final String API = "/hello/";
-	private static final String VALUE = "ShaikhIslamAlvee";
 
 	// key & certificate configuration
 	private static final String PASSWORD = "112233";
@@ -34,13 +33,11 @@ public class HttpsClientController {
 
 	// HTTPS call
 	// Certificate for the required server is imported in $JAVA_HOME/lib/security/cacerts
-	@GetMapping("/value")
-	public String getValue() {
+	@GetMapping("/value/{name}")
+	public String getValue(@PathVariable String name) {
 		RestTemplate restTemplate = new RestTemplate();
-		return restTemplate.getForObject(HTTPS_SERVICE_URL + ":" + PORT + API + VALUE, String.class);
+		return restTemplate.getForObject(HTTPS_SERVICE_URL + ":" + PORT + API + name, String.class);
 	}
-
-
 
 
 	// HTTPS call
