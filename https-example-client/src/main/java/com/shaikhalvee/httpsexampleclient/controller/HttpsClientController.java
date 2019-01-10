@@ -15,6 +15,8 @@ import org.springframework.web.client.RestTemplate;
 import java.io.*;
 import java.security.*;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 
 @RestController
 public class HttpsClientController {
@@ -25,8 +27,8 @@ public class HttpsClientController {
 	private static final String API = "/hello/";
 
 	// key & certificate configuration
-	private static final String PASSWORD = "112233";
-	private static final String TRUSTSTORE_PATH = "src/main/resources/clientTrustStore.p12";
+	private static final String PASSWORD = "123456";
+	private static final String TRUSTSTORE_PATH = "src/main/resources/truststore.p12";
 	private static final String KEY_PATH = "src/main/resources/clientKeyStore.p12";
 	private static final String SERVER_CERTIFICATE_FILE = "src/main/resources/serverCert.cer";
 
@@ -107,6 +109,36 @@ public class HttpsClientController {
 			SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(
 					new SSLContextBuilder()
 							.loadTrustMaterial(trustedStore, new TrustSelfSignedStrategy())
+							.build()
+			);
+
+			HttpClient httpClient = HttpClients.custom()
+					.setSSLSocketFactory(socketFactory)
+					.build();
+			ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+			restTemplate = new RestTemplate(requestFactory);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return restTemplate;
+	}
+
+	// can't help with it, only process is to import cert file to $JAVA_HOME/bin/security/cacerts
+	private RestTemplate getRestTemplateWithOnlyCertificate() {
+		RestTemplate restTemplate = null;
+		File certificateFile = new File(SERVER_CERTIFICATE_FILE);
+
+		try {
+			InputStream certificateInputStream = new FileInputStream(certificateFile);
+			CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+			X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(certificateInputStream);
+			KeyStore.TrustedCertificateEntry certificateEntry = new KeyStore.TrustedCertificateEntry(certificate);
+
+			KeyStore keyStore = KeyStore.getInstance("PKCS12");
+			keyStore.load(null, null);
+
+			SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(
+					new SSLContextBuilder()
 							.build()
 			);
 

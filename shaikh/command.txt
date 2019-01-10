@@ -1,0 +1,4 @@
+openssl genrsa -out rootCA_private-key_rsa.key 2048
+openssl rsa -in rootCA_private-key_rsa.key -pubout -out rootCA_public-key_rsa.key
+openssl req -new -sha256 -key rootCA_private-key_rsa.key -subj "//C=US/ST=CA/O=Acme, Inc./CN=localhost" -reqexts SAN -config openssl.cnf -out rootCA_certificate_rsa.csr
+openssl x509 -req -days 365 -in rootCA_certificate_rsa.csr -signkey rootCA_private-key_rsa.key -out rootCA_certificate_rsa.crt

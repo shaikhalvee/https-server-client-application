@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="bcpkix-jdk15on-1.60-sources">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/bcpkix-jdk15on-1.60.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/bcprov-jdk15on-1.60.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/bcprov-jdk16-1.45.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/bcprov-jdk16-1.46.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/libs/bcpkix-jdk15on-1.60-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/bcprov-jdk15on-1.60-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
