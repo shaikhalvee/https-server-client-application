@@ -9,6 +9,6 @@
 
 rootProject.name = 'spring-boot-https-server-client'
 
-include ':httpsexampleserver'
+include ':https-example-server'
 include ':http-example-server'
 include ':https-example-client'
