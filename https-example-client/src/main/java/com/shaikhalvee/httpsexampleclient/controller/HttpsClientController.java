@@ -27,10 +27,10 @@ public class HttpsClientController {
 	private static final String API = "/hello/";
 
 	// key & certificate configuration
-	private static final String PASSWORD = "123456";
+	private static final String PASSWORD = "112233";
 	private static final String TRUSTSTORE_PATH = "src/main/resources/truststore.p12";
 	private static final String KEY_PATH = "src/main/resources/clientKeyStore.p12";
-	private static final String SERVER_CERTIFICATE_FILE = "src/main/resources/serverCert.cer";
+	private static final String SERVER_CERTIFICATE_FILE = "src/main/resources/public.crt";
 
 
 	// HTTPS call

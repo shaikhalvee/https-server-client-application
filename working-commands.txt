@@ -1,0 +1,27 @@
+##	keytool is used because I couldn't provide SAN via openssl.
+###	here keystore.p12 contains private & public key padded via pkcs12
+###	we can extract public & private key via openssl
+>> keytool -genkey -alias nexuspay -keyalg rsa -keysize 2048 -validity 3650 -keypass 112233 -storepass 112233 -storetype pkcs12 -keystore kyestore.p12 -ext SAN=dns:localhost,ip:127.0.0.1
+
+##	extract public & private key
+###	extract encrypted private key
+>> winpty openssl pkcs12 -in keystore.p12 -nocerts -out private.key	# private.key here is encrypted
+###	or you can provide this for non encrypted output
+>> winpty openssl pkcs12 -in keystore.p12 -nocerts -nodes -out private.key
+###	winpty is used, otherwise openssl hangs for windows
+### -nocerts option specifies that output file won't contain no certificate, only encrypted private key
+
+###	extract unencrypted private key via openssl
+>> winpty openssl rsa -in private.key -out private_unencrypted.key
+
+###	extract public key via openssl
+>> winpty openssl pkcs12 -in keystore.p12 -nokeys -out public.key
+
+###	build certificate using keytool
+>> keytool -export -alias nexuspay -file public.crt -keystore keystore.p12
+
+###	build trustfile using the certificate
+>> keytool -importcert -file public.crt -keystore truststore.p12 -alias nexuspay
+
+# whenever import or export is called from the .p12 file, password need to be provided
+# similarly, in 2nd command ""
